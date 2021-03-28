@@ -7,8 +7,13 @@ import Utilities.Determine_Metrics as dm
 from Utilities.Constants import SIZE_SET, DIMENSION_SET
 from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, NUM_EPOCHS, REFERENCE_LIST
 
+SELECTED_REFERENCES = REFERENCE_LIST
 cwd = os.getcwd()
 x = range(1, NUM_EPOCHS + 1)
+if len(SELECTED_REFERENCES) > 2:
+    dist_add_on = 'Expanded Dist Set '
+else:
+    dist_add_on = ''
 
 
 def sort(value: str):
@@ -66,7 +71,7 @@ def load_data() -> pd.DataFrame:
     os.chdir('../Results\\')
     base = os.getcwd()
     all_files = []
-    for ref in REFERENCE_LIST[:2]:
+    for ref in SELECTED_REFERENCES:
         for data_count_var in ['All Data', 'Partial Data']:
             for class_count_var in ['Full Classes', 'Limited Classes']:
                 os.chdir(base + '\\Ref ' + ref + '\\' + data_count_var + '\\' + class_count_var + '\\')
@@ -97,13 +102,13 @@ def plot(data_df, current_metric, current_title, class_count=None, data_count=No
     ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize='xx-small')
     if class_count is None:
         plt.title(data_count + ' ' + current_metric, fontsize=10)
-        path_title = 'Same Data\\' + current_metric + '\\' + data_count + ' ' + current_title + '.png'
+        path_title = 'Same Data\\' + current_metric + '\\' + dist_add_on + data_count + ' ' + current_title + '.png'
     elif data_count is None:
         plt.title(class_count + ' ' + current_metric, fontsize=10)
-        path_title = 'Same Classes\\' + current_metric + '\\' + class_count + ' ' + current_title + '.png'
+        path_title = 'Same Classes\\' + current_metric + '\\' + dist_add_on + class_count + ' ' + current_title + '.png'
     else:
         plt.title(current_title, fontsize=10)
-        path_title = data_count + '\\' + class_count + '\\' + current_metric + '\\' + current_title + '.png'
+        path_title = data_count + '\\' + class_count + '\\' + dist_add_on + current_metric + '\\' + current_title + '.png'
 
     if show:
         plt.show()
@@ -166,7 +171,6 @@ def group_by_category(oa_category_df: pd.DataFrame, class_count_var=None, data_c
 
 
 df = load_data()
-'''
 for data_var in ['All Data', 'Partial Data']:
     for class_var in ['Full Classes', 'Limited Classes']:
         print(data_var, class_var, sep='\t')
@@ -177,7 +181,6 @@ for class_var in ['Full Classes', 'Limited Classes']:
     print(data_var, class_var, sep='\t')
     local_df = df[filter(lambda layers: class_var in layers, df.columns)]
     group_by_category(local_df, class_count_var=class_var, data_count_var=data_var)
-'''
 for data_var in ['All Data', 'Partial Data']:
     class_var = None
     print(data_var, class_var, sep='\t')

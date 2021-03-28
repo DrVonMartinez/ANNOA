@@ -73,6 +73,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Consumer\PCA\ANNOA_nn_pca.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Consumer\PCA\ANNOA_nn_pca_all_size.py">
           <value>
             <Attribute>
@@ -119,6 +126,13 @@
           <value>
             <Attribute>
               <option name="separator" value=":" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Plot\Plot.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>

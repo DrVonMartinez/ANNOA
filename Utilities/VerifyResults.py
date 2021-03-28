@@ -2,6 +2,7 @@ import glob
 import os
 import pandas as pd
 from Utilities.Constants import SIZE_SET, DIMENSION_SET, STATS_SET
+from Utilities.Expanded_Constants import REFERENCE_LIST
 
 incomplete_sizes = []
 cwd = os.getcwd()
@@ -11,7 +12,7 @@ for dim in [1]:
         print('\t' + data)
         for classes in ['Full Classes']:
             print('\t\t' + classes)
-            for reference in ['Normal', 'Uniform']:
+            for reference in REFERENCE_LIST:
                 print('\t\t\t' + reference)
                 os.chdir('C:\\Users\\Auror\\PycharmProjects\\ANNOA\\Results\\Ref ' + reference + '\\' + data + '\\' + classes)
                 for size in SIZE_SET:
@@ -37,13 +38,13 @@ for dim in [1]:
                         print('\t\t\t\t' + str(size) + '\t\t' + str(len(neural_networks)) + '/3' + '\t\t' + str(len(pca)) + '/3')
                     # print('\t\t\t\t' + str(size) + '\t\t' + str(len(neural_networks)) + '\t\t' + str(len(trees)) + '\t\t' + str(len(knn)) + '\t\t' + str(len(svm)))
                     # print('\t\t\t\t' + str(neural_networks), '\t\t\t\t' + str(trees), '\t\t\t\t' + str(knn), '\t\t\t\t' + str(svm), sep='\n')
-for dim in DIMENSION_SET[1:]:
+for dim in DIMENSION_SET[1:-1]:
     print('Dimension:', dim)
     for data in ['All Data', 'Partial Data']:
         print('\t' + data)
         for classes in ['Full Classes', 'Limited Classes']:
             print('\t\t' + classes)
-            for reference in ['Normal', 'Uniform']:
+            for reference in REFERENCE_LIST:
                 print('\t\t\t' + reference)
                 os.chdir('C:\\Users\\Auror\\PycharmProjects\\ANNOA\\Results\\Ref ' + reference + '\\' + data + '\\' + classes)
                 for size in SIZE_SET:

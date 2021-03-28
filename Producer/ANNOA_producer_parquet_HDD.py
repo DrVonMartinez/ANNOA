@@ -19,6 +19,7 @@ import pandas as pd
 import progressbar
 
 from Utilities.Constants import STATS_SET, SIZE_SET, REFERENCE_DICTIONARY, MONTE_CARLO, DIMENSION_SET
+from Utilities.Expanded_Constants import REFERENCE_LIST
 from sklearn.preprocessing import scale as standardize
 from Distribution.Distribution import Distribution
 
@@ -250,9 +251,9 @@ def main():
     assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        for dim in [3]:
-            for size in SIZE_SET[-1:]:
-                for ref_set in ['Normal', 'Uniform']:
+        for dim in [1, 2]:
+            for size in SIZE_SET:
+                for ref_set in REFERENCE_LIST:
                     training_run = OzturkTrain(monte_carlo=MONTE_CARLO, size=size, dimension=dim)
                     training_run.reference_set(ref_set)
                     training_run.train(STATS_SET)

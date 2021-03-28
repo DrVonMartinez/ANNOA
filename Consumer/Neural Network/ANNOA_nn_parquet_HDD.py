@@ -7,7 +7,7 @@ import tensorflow as tf
 from keras.layers import Dense, Input
 from keras.models import Sequential
 from Utilities.Constants import SIZE_SET, SEED, label
-from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS
+from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS, REFERENCE_LIST
 from Utilities.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
 
 
@@ -207,9 +207,7 @@ class Ozturk:
 
 
 def run_ozturk_annoa(dimension, size, full_data, full_classes):
-    # reference_set = ['Normal', 'Uniform']
-    reference_set = ['Normal']
-    # reference_set = ['Uniform']
+    reference_set = REFERENCE_LIST[2:]
     for reference_distribution in reference_set:
         training_model = Ozturk(size=size,
                                 dimension=dimension,
@@ -220,8 +218,7 @@ def run_ozturk_annoa(dimension, size, full_data, full_classes):
                                 full_classes=full_classes,
                                 full_data=full_data)
         training_model.prepare_training_data()
-        # for num_hidden_layers in NUM_HIDDEN_LAYERS:
-        for num_hidden_layers in [2]:
+        for num_hidden_layers in NUM_HIDDEN_LAYERS:
             training_model.define_network(num_hidden_layers)
             training_model.info()
             training_model.train()
@@ -232,14 +229,14 @@ def main():
     assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
     '''
     for dimension in [1]:
-        for size in SIZE_SET[:-1]:
+        for size in SIZE_SET:
             for full_data in [True, False]:
                 run_ozturk_annoa(dimension, size, full_data, True)
     '''
-    for dimension in [3]:
-        for size in [10, 25, 50, 75, 80, 100, 125, 150]:
+    for dimension in [2]:
+        for size in SIZE_SET:
             for full_data in [True, False]:
-                for full_classes in [False]:
+                for full_classes in [True]:
                     run_ozturk_annoa(dimension, size, full_data, full_classes)
 
 

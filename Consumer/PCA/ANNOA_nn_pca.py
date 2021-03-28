@@ -4,7 +4,8 @@ from keras.layers import Dense, Input
 from keras.models import Sequential
 
 from Utilities.Constants import PCA_VAL, SIZE_SET
-from Utilities.Tensor_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, OPTIMIZER_SET, EXPANDED_METRIC_SET, EXPANDED_MODEL_METRICS, EXPANDED_HISTORY_KEYS
+from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS, REFERENCE_LIST
+from Utilities.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
 from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD import GeneralizedOzturk
 
 # physical_devices = tf.config.list_physical_devices('GPU')
@@ -95,14 +96,14 @@ class Ozturk:
         self.__generalizedOzturk.revert(cwd)
 
     def __set_title(self):
-        return 'Guess {}, Dim {}, Hidden Layer {}, PCA, Size {}, {}'.format(self.__generalizedOzturk.reference_distribution(), self.__generalizedOzturk.dim(), self.__num_hidden_layers, self.__generalizedOzturk.size(), self.__optimizer)
+        return '{}, Dim {}, Hidden Layer {}, PCA, Size {}, {}'.format(self.__generalizedOzturk.reference_distribution(), self.__generalizedOzturk.dim(), self.__num_hidden_layers, self.__generalizedOzturk.size(), self.__optimizer)
 
     def info(self):
         self.__generalizedOzturk.info()
 
 
 def run_ozturk_annoa(dimension, size, full_classes):
-    reference_set = ['Normal', 'Uniform']
+    reference_set = REFERENCE_LIST[2:]
     for reference_distribution in reference_set:
         training_model = Ozturk(size=size,
                                 dimension=dimension,
@@ -122,7 +123,7 @@ def run_ozturk_annoa(dimension, size, full_classes):
 def main():
     assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
     for dimension in [2]:
-        for size in [75, 80, 100, 125, 150, 200]:
+        for size in [150, 200]:
             if dimension == 1:
                 run_ozturk_annoa(dimension=dimension, size=size, full_classes=True)
             else:

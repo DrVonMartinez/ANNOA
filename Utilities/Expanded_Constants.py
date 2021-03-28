@@ -1,7 +1,7 @@
 from scipy.stats import norm, uniform, expon, cauchy, laplace, logistic, rayleigh
 
 REFERENCE_DICTIONARY = {'Normal': norm, 'Uniform': uniform, 'Exponential': expon, 'Cauchy': cauchy, 'Laplace': laplace, 'Logistic': logistic, 'Rayleigh': rayleigh}
-REFERENCE_LIST = ['Normal', 'Uniform', 'Exponential', 'Cauchy', 'Laplace', 'Logistic', 'Rayleigh']
+REFERENCE_LIST = ['Normal', 'Uniform', 'Exponential', 'Cauchy', 'Laplace']
 NUM_HIDDEN_LAYERS = range(0, 3)
 HIDDEN_NEURONS = 250
 OPTIMIZER_SET = ['adadelta', 'adam', 'ftrl', 'nadam', 'sgd']
