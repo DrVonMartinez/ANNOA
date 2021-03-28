@@ -123,7 +123,8 @@ def run_ozturk_annoa(dimension, size, full_classes):
 def main():
     assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
     for dimension in [2]:
-        for size in [150, 200]:
+        # for size in [150, 200]:
+        for size in SIZE_SET:
             if dimension == 1:
                 run_ozturk_annoa(dimension=dimension, size=size, full_classes=True)
             else:

@@ -234,7 +234,8 @@ def main():
                 run_ozturk_annoa(dimension, size, full_data, True)
     '''
     for dimension in [2]:
-        for size in SIZE_SET:
+        # for size in SIZE_SET:
+        for size in [50, 75, 80, 100, 125, 150, 200]:
             for full_data in [True, False]:
                 for full_classes in [True]:
                     run_ozturk_annoa(dimension, size, full_data, full_classes)
