@@ -2,7 +2,7 @@ from scipy.stats import norm, uniform, expon, cauchy, laplace, logistic, rayleig
 
 STATS_SET = [norm, uniform, expon, laplace, logistic, cauchy, rayleigh]
 SIZE_SET = [10, 25, 50, 75, 80, 100, 125, 150, 200]
-DIMENSION_SET = [1, 2, 3]
+DIMENSION_SET = [1, 2]
 SEED = 9
 MONTE_CARLO = 10 ** 5
 REFERENCE_DICTIONARY = {'Normal': norm, 'Uniform': uniform, 'Exponential': expon, 'Cauchy': cauchy, 'Laplace': laplace, 'Logistic': logistic, 'Rayleigh': rayleigh}
