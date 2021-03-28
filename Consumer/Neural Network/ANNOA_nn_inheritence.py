@@ -1,11 +1,10 @@
 import pandas as pd
 import tensorflow as tf
 from keras.layers import Dense, Input
-from keras.metrics import mae, Precision, Recall
 from keras.models import Sequential
-import numpy as np
 
-from Utilities.Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, OPTIMIZER_SET, METRIC_SET, label, EXPANDED_METRIC_SET, EXPANDED_MODEL_METRICS, EXPANDED_HISTORY_KEYS
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_HISTORY_KEYS
+from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
 from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD import GeneralizedOzturk
 
 physical_devices = tf.config.list_physical_devices('GPU')

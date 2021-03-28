@@ -17,10 +17,10 @@ import warnings
 import numpy as np
 import pandas as pd
 import progressbar
-
-from Utilities.Constants import STATS_SET, SIZE_SET, REFERENCE_DICTIONARY, MONTE_CARLO, DIMENSION_SET
-from Utilities.Expanded_Constants import REFERENCE_LIST
 from sklearn.preprocessing import scale as standardize
+
+from Constants.Constants import STATS_SET, SIZE_SET, REFERENCE_DICTIONARY, MONTE_CARLO
+from Constants.Expanded_Constants import REFERENCE_LIST
 from Distribution.Distribution import Distribution
 
 warnings.filterwarnings("ignore", category=FutureWarning)

@@ -6,9 +6,11 @@ import pandas as pd
 import tensorflow as tf
 from keras.layers import Dense, Input
 from keras.models import Sequential
-from Utilities.Constants import SIZE_SET, SEED, label, MONTE_CARLO
-from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS
-from Utilities.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
+
+from Constants.Constants import MONTE_CARLO
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS
+from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
+
 
 # physical_devices = tf.config.list_physical_devices('GPU')
 # print(physical_devices)

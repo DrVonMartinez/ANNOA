@@ -17,9 +17,9 @@ import warnings
 import numpy as np
 import pandas as pd
 import progressbar
-
-from Utilities.Constants import STATS_SET, SIZE_SET, REFERENCE_DICTIONARY, MONTE_CARLO, DIMENSION_SET
 from sklearn.preprocessing import scale as standardize
+
+from Constants.Constants import STATS_SET, REFERENCE_DICTIONARY, MONTE_CARLO
 from Distribution.Distribution import Distribution
 
 warnings.filterwarnings("ignore", category=FutureWarning)

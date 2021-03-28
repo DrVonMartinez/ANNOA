@@ -6,9 +6,11 @@ import pandas as pd
 import tensorflow as tf
 from keras.layers import Dense, Input
 from keras.models import Sequential
-from Utilities.Constants import SIZE_SET, SEED, label
-from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS, REFERENCE_LIST
-from Utilities.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
+
+from Constants.Constants import SEED, label
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS, REFERENCE_LIST
+from Constants.Storage_Constants import DATA_PATH, RESULT_PATH, MODEL_PATH
+from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
 
 
 # physical_devices = tf.config.list_physical_devices('GPU')
@@ -163,13 +165,10 @@ class Ozturk:
 
     def __change_cwd_data(self):
         cwd = os.getcwd()
-        os.chdir('F:\\Data\\')
-        cwd_dir = os.getcwd()
-        new_dir = '\\dim ' + str(self.__dim) + '\\Ref ' + self.__reference_distribution + '\\'
-        os.chdir(cwd_dir + new_dir)
+        os.chdir(DATA_PATH.format(dim=self.__dim, reference=self.__reference_distribution))
         return cwd
 
-    def __change_cwd_results(self):
+    def __change_cwd_results_local(self):
         cwd = os.getcwd()
         if self.__full_data:
             data = 'All Data'
@@ -181,6 +180,16 @@ class Ozturk:
             classes = 'Limited Classes'
         new_dir = 'Ref ' + self.__reference_distribution + '\\' + data + '\\' + classes + '\\'
         os.chdir('..\\..\\Results\\' + new_dir)
+        return cwd
+
+    def __change_cwd_results(self):
+        cwd = os.getcwd()
+        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.__full_classes_label(), classes=self.__full_classes_label()))
+        return cwd
+
+    def __change_cwd_model(self):
+        cwd = os.getcwd()
+        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.__full_classes_label(), classes=self.__full_classes_label()))
         return cwd
 
     def __full_data_label(self):

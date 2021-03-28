@@ -1,8 +1,8 @@
 import glob
 import os
-import pandas as pd
-from Utilities.Constants import SIZE_SET, DIMENSION_SET, STATS_SET
-from Utilities.Expanded_Constants import REFERENCE_LIST
+
+from Constants.Constants import SIZE_SET
+from Constants.Expanded_Constants import REFERENCE_LIST
 
 
 def detail_size(size: int):

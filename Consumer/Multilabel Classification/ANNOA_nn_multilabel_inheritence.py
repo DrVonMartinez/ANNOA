@@ -4,8 +4,9 @@ from keras.layers import Dense, Input
 from keras.metrics import mae
 from keras.models import Sequential
 
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_HISTORY_KEYS, EXPANDED_METRIC_SET
+from Constants.Tensor_Constants import OPTIMIZER_SET
 from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD import GeneralizedOzturk
-from Utilities.Constants import SIZE_SET, NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, OPTIMIZER_SET, label, METRIC_SET
 
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -93,10 +94,10 @@ class Ozturk:
         self.__define_shape()
 
     def store(self):
-        history_keys = ['loss', 'mean_absolute_error', 'accuracy']
+        history_keys = EXPANDED_HISTORY_KEYS
         cwd = self.__generalizedOzturk.change_cwd_results()
-        history_df = pd.DataFrame(columns=METRIC_SET)
-        for key, col in zip(history_keys, METRIC_SET):
+        history_df = pd.DataFrame(columns=EXPANDED_METRIC_SET)
+        for key, col in zip(history_keys, EXPANDED_METRIC_SET):
             history_df[col] = self.__history.history[key]
         history_df.to_csv(self.__set_title() + '.csv', index=False)
         self.__generalizedOzturk.revert(cwd)

@@ -4,13 +4,14 @@ import os
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-from pyarrow.parquet import ParquetFile
 import tensorflow as tf
 from keras.layers import Dense, Input
 from keras.models import Sequential
-from Utilities.Constants import SIZE_SET, SEED, label, MONTE_CARLO
-from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS
-from Utilities.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
+from pyarrow.parquet import ParquetFile
+
+from Constants.Constants import MONTE_CARLO
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS
+from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
 
 
 class Ozturk:

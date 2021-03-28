@@ -3,6 +3,13 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="\.gitignore">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Consumer\Decision Tree\ANNOA_Tree.py">
           <value>
             <Attribute>
@@ -46,6 +53,13 @@
           </value>
         </entry>
         <entry key="\Consumer\Neural Network\ANNOA_nn_csv_HDD_batch.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\Consumer\Neural Network\ANNOA_nn_inheritence.py">
           <value>
             <Attribute>
               <option name="separator" value="," />

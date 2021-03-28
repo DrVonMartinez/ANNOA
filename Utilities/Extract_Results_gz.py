@@ -1,9 +1,10 @@
 import glob
 import os
+
 import numpy as np
 import pandas as pd
 
-from Utilities.Constants import SIZE_SET, DIMENSION_SET, STATS_SET
+from Constants.Constants import DIMENSION_SET
 
 dtype = np.float16
 

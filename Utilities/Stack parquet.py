@@ -1,8 +1,9 @@
-import pandas as pd
-import os
 import glob
+import os
 
-from Utilities.Constants import SEED
+import pandas as pd
+
+from Constants.Constants import SEED
 
 cwd = os.getcwd()
 for dim in ['dim 2']:

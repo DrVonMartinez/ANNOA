@@ -6,7 +6,8 @@ import pandas as pd
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import scale as standardize
 
-from Utilities.Constants import SEED, label, PCA_VAL
+from Constants.Constants import SEED, label, PCA_VAL
+from Constants.Storage_Constants import DATA_PATH, MODEL_PATH, RESULT_PATH
 
 
 class GeneralizedOzturk:
@@ -214,13 +215,10 @@ class GeneralizedOzturk:
 
     def change_cwd_data(self):
         cwd = os.getcwd()
-        os.chdir('F:\\Data\\')
-        cwd_dir = os.getcwd()
-        new_dir = '\\dim ' + str(self.__dim) + '\\Ref ' + self.__reference_distribution + '\\'
-        os.chdir(cwd_dir + new_dir)
+        os.chdir(DATA_PATH.format(dim=self.__dim, reference=self.__reference_distribution))
         return cwd
 
-    def change_cwd_results(self):
+    def change_cwd_results_local(self):
         cwd = os.getcwd()
         if self.full_data:
             data = 'All Data'
@@ -234,18 +232,14 @@ class GeneralizedOzturk:
         os.chdir('..\\..\\Results\\' + new_dir)
         return cwd
 
+    def change_cwd_results(self):
+        cwd = os.getcwd()
+        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.full_classes_label(), classes=self.full_classes_label()))
+        return cwd
+
     def change_cwd_model(self):
         cwd = os.getcwd()
-        if self.full_data:
-            data = 'All Data'
-        else:
-            data = 'Partial Data'
-        if self.full_classes:
-            classes = 'Full Classes'
-        else:
-            classes = 'Limited Classes'
-        new_dir = 'Ref ' + self.__reference_distribution + '\\' + data + '\\' + classes + '\\'
-        os.chdir('F:\\Model\\' + new_dir)
+        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.full_classes_label(), classes=self.full_classes_label()))
         return cwd
 
     def full_data_label(self):

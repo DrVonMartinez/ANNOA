@@ -1,12 +1,12 @@
 import glob
 import os
 
-import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from Utilities.Constants import SIZE_SET, METRIC_SET, SHOW
-from Utilities.Expanded_Constants import NUM_EPOCHS, NUM_HIDDEN_LAYERS
+from Constants.Constants import SIZE_SET, METRIC_SET, SHOW
+from Constants.Expanded_Constants import NUM_EPOCHS, NUM_HIDDEN_LAYERS
+from Constants.Storage_Constants import RESULT_PATH
 
 
 def sort(value):
@@ -36,12 +36,10 @@ def plot(data_df, current_metric, current_title, class_count=None, data_count=No
     plt.close('all')
 
 
-cwd = os.getcwd()
 x = range(1, NUM_EPOCHS + 1)
 for class_count_var in ['Full Classes', 'Limited Classes']:
     for data_count_var in ['All Data', 'Partial Data']:
-        os.chdir(cwd)
-        os.chdir('..\\Results\\' + data_count_var + '\\' + class_count_var + '\\')
+        os.chdir(RESULT_PATH.format(data=data_count_var, classes=class_count_var))
         print(os.getcwd())
         # Build DataFrame
         oa_hidden_layer_list = []
@@ -66,8 +64,6 @@ for class_count_var in ['Full Classes', 'Limited Classes']:
         oa_hidden_layer_df['Index'] = x
         oa_hidden_layer_df = oa_hidden_layer_df.set_index('Index')
         oa_hidden_layer_df = oa_hidden_layer_df.reindex(sorted(list(oa_hidden_layer_df.columns)), axis=1)
-        os.chdir(cwd)
-        os.chdir('\\')
         for metric in sorted(METRIC_SET):
             # Compare All together
             current_metric_df = oa_hidden_layer_df[filter(lambda layers: metric in layers, oa_hidden_layer_df.columns)]
@@ -98,8 +94,7 @@ for class_count_var in ['Full Classes', 'Limited Classes']:
 
 # Same Data
 for class_count_var in ['Full Classes', 'Limited Classes']:
-    os.chdir(cwd)
-    os.chdir('../Results\\')
+    os.chdir('F:\\Results\\')
     print(os.getcwd() + '\\*\\' + class_count_var)
     # Build DataFrame
     oa_hidden_layer_list = []
@@ -124,8 +119,6 @@ for class_count_var in ['Full Classes', 'Limited Classes']:
     oa_hidden_layer_df['Index'] = x
     oa_hidden_layer_df = oa_hidden_layer_df.set_index('Index')
     oa_hidden_layer_df = oa_hidden_layer_df.reindex(sorted(list(oa_hidden_layer_df.columns)), axis=1)
-    os.chdir(cwd)
-    os.chdir('\\')
     for metric in METRIC_SET:
         # Compare All together
         current_metric_df = oa_hidden_layer_df[filter(lambda layers: metric in layers, oa_hidden_layer_df.columns)]
@@ -156,8 +149,7 @@ for class_count_var in ['Full Classes', 'Limited Classes']:
 
 # Same Classes
 for data_count_var in ['All Data', 'Partial Data']:
-    os.chdir(cwd)
-    os.chdir('..\\Results\\' + data_count_var + '\\')
+    os.chdir('F:\\Results\\' + data_count_var + '\\')
     print(os.getcwd() + '\\*\\')
     # Build DataFrame
     oa_hidden_layer_list = []
@@ -175,8 +167,6 @@ for data_count_var in ['All Data', 'Partial Data']:
     oa_hidden_layer_df['Index'] = x
     oa_hidden_layer_df = oa_hidden_layer_df.set_index('Index')
     oa_hidden_layer_df = oa_hidden_layer_df.reindex(sorted(list(oa_hidden_layer_df.columns)), axis=1)
-    os.chdir(cwd)
-    os.chdir('\\')
     for metric in sorted(METRIC_SET):
         # Compare All together
         current_metric_df = oa_hidden_layer_df[filter(lambda layers: metric in layers, oa_hidden_layer_df.columns)]

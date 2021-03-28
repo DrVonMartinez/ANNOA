@@ -1,7 +1,9 @@
 import glob
 import os
+
 import pandas as pd
-from Utilities.Constants import SIZE_SET, DIMENSION_SET, STATS_SET
+
+from Constants.Constants import SIZE_SET, DIMENSION_SET, STATS_SET
 
 for dim in DIMENSION_SET:
     os.chdir('F:\\Data\\dim ' + str(dim) + '\\')

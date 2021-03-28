@@ -1,10 +1,12 @@
 /Results/
 /venv/
-/Plot/Plot.7z/
-/Plot/Old Plots.7z/
+/Plot/Plot.7z
+/Plot/Old Plots.7z
 /Consumer/Decision Tree/
 /Consumer/K Mean/
 /Consumer/K Nearest Neighbor/
 /Consumer/Support Vector Machine/
 /Data.tar
 /DataMiningNotes.txt
+/Producer/Legacy.zip
+/Constants/Storage_Constants.py

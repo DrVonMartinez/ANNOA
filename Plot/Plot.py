@@ -5,14 +5,15 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from Utilities.Constants import SIZE_SET, DIMENSION_SET
-from Utilities.Expanded_Constants import REFERENCE_LIST, REFERENCE_DICTIONARY
+from Constants.Constants import SIZE_SET
+from Constants.Expanded_Constants import REFERENCE_LIST
+from Constants.Storage_Constants import DATA_PATH
 
 for size in SIZE_SET:
     print(1, size, 'Complete')
     for reference in REFERENCE_LIST:
         print('\t', reference, sep='')
-        os.chdir('F:\\Data\\dim 1\\Ref ' + reference)
+        os.chdir(DATA_PATH.format(dim=1, reference=reference))
         cluster = glob.glob('*Set ' + str(size) + '.parquet_' + reference + '_gz')
         plt.close('all')
         for file in cluster:
@@ -33,7 +34,7 @@ for size in SIZE_SET:
         print(2, size, class_count_var)
         for reference in REFERENCE_LIST:
             print('\t', reference, sep='')
-            os.chdir('F:\\Data\\dim 2\\Ref ' + reference)
+            os.chdir(DATA_PATH.format(dim=2, reference=reference))
             cluster = glob.glob('*Set ' + str(size) + '.parquet_' + reference + '_gz')
             plt.close('all')
             for file in cluster:

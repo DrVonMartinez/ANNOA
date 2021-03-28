@@ -1,8 +1,10 @@
-import pandas as pd
-import os
 import glob
+import os
+
 import numpy as np
-from Utilities.Constants import REFERENCE_LIST
+import pandas as pd
+
+from Constants.Constants import REFERENCE_LIST
 
 cwd = os.getcwd()
 for dim in ['dim 1', 'dim 2']:

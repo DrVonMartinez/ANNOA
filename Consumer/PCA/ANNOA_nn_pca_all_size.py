@@ -1,12 +1,9 @@
 import pandas as pd
-import tensorflow as tf
-import numpy as np
 from keras.layers import Dense, Input
 from keras.models import Sequential
-from numpy import ndarray
 
-from Utilities.Constants import PCA_VAL, SIZE_SET, SEED
-from Utilities.Tensor_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, OPTIMIZER_SET, EXPANDED_METRIC_SET, EXPANDED_MODEL_METRICS, EXPANDED_HISTORY_KEYS
+from Constants.Constants import PCA_VAL, SIZE_SET
+from Constants.Tensor_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, OPTIMIZER_SET, EXPANDED_METRIC_SET, EXPANDED_MODEL_METRICS, EXPANDED_HISTORY_KEYS
 from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD_ALL_SIZE import GeneralizedOzturk
 
 

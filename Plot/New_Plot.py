@@ -1,14 +1,15 @@
-import pandas as pd
-import os
 import glob
-import matplotlib.pyplot as plt
-import Utilities.Determine_Metrics as dm
+import os
 
-from Utilities.Constants import SIZE_SET, DIMENSION_SET
-from Utilities.Expanded_Constants import NUM_HIDDEN_LAYERS, NUM_EPOCHS, REFERENCE_LIST
+import matplotlib.pyplot as plt
+import pandas as pd
+
+import Utilities.Determine_Metrics as dm
+from Constants.Constants import SIZE_SET, DIMENSION_SET
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, NUM_EPOCHS, REFERENCE_LIST
+from Constants.Storage_Constants import RESULT_PATH
 
 SELECTED_REFERENCES = REFERENCE_LIST
-cwd = os.getcwd()
 x = range(1, NUM_EPOCHS + 1)
 if len(SELECTED_REFERENCES) > 2:
     dist_add_on = 'Expanded Dist Set '
@@ -67,15 +68,12 @@ def name_columns(file_title: str):
 
 
 def load_data() -> pd.DataFrame:
-    os.chdir(cwd)
-    os.chdir('../Results\\')
-    base = os.getcwd()
     all_files = []
     for ref in SELECTED_REFERENCES:
         for data_count_var in ['All Data', 'Partial Data']:
             for class_count_var in ['Full Classes', 'Limited Classes']:
-                os.chdir(base + '\\Ref ' + ref + '\\' + data_count_var + '\\' + class_count_var + '\\')
-                all_files += list(filter(lambda z: '[' not in z, glob.glob(base + '\\Ref ' + ref + '\\' + data_count_var + '\\' + class_count_var + '\\*.csv')))
+                os.chdir(RESULT_PATH.format(reference=ref, data=data_count_var, classes=class_count_var))
+                all_files += list(filter(lambda z: '[' not in z, glob.glob('*.csv')))
     oa_df_list = []
     for file in all_files:
         ref_style, dim, data_style, hidden_layer, size, class_style = name_columns(file)

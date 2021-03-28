@@ -1,8 +1,10 @@
 import glob
 import os
+
 import pandas as pd
-from Utilities.Constants import SIZE_SET, DIMENSION_SET, SEED, PCA_VAL
 from sklearn.decomposition import PCA
+
+from Constants.Constants import DIMENSION_SET, SEED, PCA_VAL
 
 n_components = []
 explained_variance_ratio = []
