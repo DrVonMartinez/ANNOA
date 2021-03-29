@@ -132,8 +132,8 @@ class GeneralizedOzturk:
             batch_output_temp = batch_df[self.__class_set]
             batch_input_list.append(batch_input_temp)
             batch_output_list.append(batch_output_temp)
-        pd_batch_input = pd.concat(batch_input_list)
-        pd_batch_output = pd.concat(batch_output_list).astype(np.int8)
+        pd_batch_input = pd.concat(batch_input_list, ignore_index=True)
+        pd_batch_output = pd.concat(batch_output_list, ignore_index=True).astype(np.int8)
         return pd_batch_input, pd_batch_output
 
     def __prepare_training_data(self, distribution_files):
@@ -234,12 +234,12 @@ class GeneralizedOzturk:
 
     def change_cwd_results(self):
         cwd = os.getcwd()
-        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.full_classes_label(), classes=self.full_classes_label()))
+        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.full_data_label(), classes=self.full_classes_label()))
         return cwd
 
     def change_cwd_model(self):
         cwd = os.getcwd()
-        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.full_classes_label(), classes=self.full_classes_label()))
+        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.full_data_label(), classes=self.full_classes_label()))
         return cwd
 
     def full_data_label(self):

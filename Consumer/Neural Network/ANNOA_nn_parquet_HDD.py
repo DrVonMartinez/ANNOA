@@ -114,11 +114,11 @@ class Ozturk:
         else:
             batch_columns = ['U', 'V']
         batch_input_list = [pd.read_parquet(file).astype(dtype=self.__dtype).fillna(value=0)[batch_columns] for file in distribution_files]
-        pd_batch_input = pd.concat(batch_input_list)
+        pd_batch_input = pd.concat(batch_input_list, ignore_index=True)
         pd_batch_input.info()
 
         batch_output_list = [pd.read_parquet(file).astype(dtype=np.int8).fillna(value=0)[self.__distribution_names] for file in distribution_files]
-        pd_batch_output = pd.concat(batch_output_list)
+        pd_batch_output = pd.concat(batch_output_list, ignore_index=True)
         pd_batch_output.info()
 
         np.random.seed(seed=SEED)
@@ -184,12 +184,12 @@ class Ozturk:
 
     def __change_cwd_results(self):
         cwd = os.getcwd()
-        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.__full_classes_label(), classes=self.__full_classes_label()))
+        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.__full_data_label(), classes=self.__full_classes_label()))
         return cwd
 
     def __change_cwd_model(self):
         cwd = os.getcwd()
-        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.__full_classes_label(), classes=self.__full_classes_label()))
+        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.__full_data_label(), classes=self.__full_classes_label()))
         return cwd
 
     def __full_data_label(self):

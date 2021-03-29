@@ -169,8 +169,8 @@ class GeneralizedOzturk:
             batch_output_temp = batch_df[self.__distribution_names]
             batch_input_list.append(batch_input_temp)
             batch_output_list.append(batch_output_temp)
-        pd_batch_input = pd.concat(batch_input_list)
-        pd_batch_output = pd.concat(batch_output_list)
+        pd_batch_input = pd.concat(batch_input_list, ignore_index=True)
+        pd_batch_output = pd.concat(batch_output_list, ignore_index=True)
         pd_batch_output['Class'] = pd_batch_output[self.__distribution_names[0]]
         for i in range(1, len(self.__distribution_names)):
             pd_batch_output['Class'] += pd_batch_output[self.__distribution_names[i]] * (i + 1)
@@ -225,14 +225,20 @@ class GeneralizedOzturk:
 
     def change_cwd_results(self):
         cwd = os.getcwd()
-        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.full_classes_label(), classes=self.full_classes_label()))
+        os.chdir(RESULT_PATH.format(reference=self.__reference_distribution, data=self.full_data_label, classes=self.full_classes_label))
         return cwd
 
     def change_cwd_model(self):
         cwd = os.getcwd()
-        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.full_classes_label(), classes=self.full_classes_label()))
+        os.chdir(MODEL_PATH.format(reference=self.__reference_distribution, data=self.full_data_label, classes=self.full_classes_label))
         return cwd
 
+    @property
+    def full_data_label(self):
+        if self:
+            return 'All Data'
+
+    @property
     def full_classes_label(self):
         if self.full_classes:
             classes = 'Complete Classes'
