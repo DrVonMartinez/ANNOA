@@ -1,6 +1,5 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
 def false_positive_rate(df: pd.DataFrame):

@@ -174,7 +174,7 @@ class OzturkTrain:
         reference_df.to_parquet(filename)
         return filename
 
-    def __z_2(self, p):
+    def __z_2(self, p) -> np.ndarray:
         """
         The Formula for Z^2
         Z**2 = (p-mu).T  *  sigma**-1  * (p-mu)
@@ -189,8 +189,8 @@ class OzturkTrain:
         except AssertionError:
             inv_p_cov = np.linalg.pinv(p_cov)
 
-        p_t = np.subtract(p, p_mean).conj()
-        p_new = np.transpose(np.subtract(p, p_mean), axes=(0, 2, 1))
+        p_t: np.ndarray = np.subtract(p, p_mean).conj()
+        p_new: np.ndarray = np.transpose(np.subtract(p, p_mean), axes=(0, 2, 1))
         z_2 = np.zeros((self.__monte_carlo, self.__size))
         for i in range(self.__size):
             p_t_temp = np.reshape(p_t[:, i, :], (self.__monte_carlo, 1, self.__dim))
@@ -198,10 +198,10 @@ class OzturkTrain:
             z_2[:, i] = (p_t_temp @ inv_p_cov @ p_new_temp).reshape(self.__monte_carlo)
         return z_2
 
-    def size(self):
+    def size(self) -> int:
         return self.__size
 
-    def dim(self):
+    def dim(self) -> int:
         return self.__dim
 
     def __adjust_columns(self, df):

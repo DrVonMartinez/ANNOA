@@ -5,13 +5,15 @@ import pandas as pd
 from sklearn.decomposition import PCA
 
 from Constants.Constants import DIMENSION_SET, SEED, PCA_VAL
+from Constants.Expanded_Constants import REFERENCE_LIST
+from Constants.Storage_Constants import DATA_PATH
 
 n_components = []
 explained_variance_ratio = []
 for dim in DIMENSION_SET:
     print('Dimension:', dim)
-    for reference in ['Normal', 'Uniform']:
-        os.chdir('F:\\Data\\dim ' + str(dim) + '\\Ref ' + reference + '\\')
+    for reference in REFERENCE_LIST:
+        os.chdir(DATA_PATH.format(dim=dim, reference=reference))
         size_files = glob.glob(reference + ' Reference*')
         for size_file in size_files:
             size_np = pd.read_parquet(size_file).to_numpy()

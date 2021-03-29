@@ -7,6 +7,7 @@ from sklearn.decomposition import PCA
 
 from Constants.Constants import SIZE_SET, DIMENSION_SET, SEED
 from Constants.Expanded_Constants import REFERENCE_LIST
+from Constants.Storage_Constants import DATA_PATH
 
 n_components = []
 explained_variance_ratio = []
@@ -19,7 +20,7 @@ for dim in DIMENSION_SET:
         dist_explained_var = []
         print('\t' + str(size))
         for reference in REFERENCE_LIST:
-            os.chdir('F:\\Data\\dim ' + str(dim) + '\\Ref ' + reference + '\\')
+            os.chdir(DATA_PATH.format(dim=dim, reference=reference))
             size_files = glob.glob('*Data Set ' + str(size) + '.parquet_' + reference + '_gz')
             feature_columns = ['U' + str(i) for i in range(size+1)] + ['V' + str(i) for i in range(size+1)]
             size_df = pd.concat(map(lambda x: pd.read_parquet(x), size_files), ignore_index=True)[feature_columns]

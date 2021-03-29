@@ -4,7 +4,8 @@ from keras.layers import Dense, Input
 from keras.metrics import mae
 from keras.models import Sequential
 
-from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_HISTORY_KEYS, EXPANDED_METRIC_SET
+from Constants.Constants import SIZE_SET
+from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_HISTORY_KEYS, EXPANDED_METRIC_SET, REFERENCE_LIST
 from Constants.Tensor_Constants import OPTIMIZER_SET
 from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD import GeneralizedOzturk
 
@@ -64,17 +65,18 @@ class Ozturk:
         self.__model.summary()
         self.__title = self.__set_title()
 
-    def __define_shape(self):
+    def __define_shape(self) -> dict:
         if self.__generalizedOzturk.full_data:
             self.__shapes = {'input': ((self.__generalizedOzturk.size() + 1) * 2,), 'hidden': (self.__hidden_neurons,)}
         else:
             self.__shapes = {'input': (2,), 'hidden': (self.__hidden_neurons,)}
         self.__shapes['output'] = len(self.__generalizedOzturk.class_set())
+        return self.__shapes
 
-    def size(self):
+    def size(self) -> int:
         return self.__generalizedOzturk.size()
 
-    def dim(self):
+    def dim(self) -> int:
         return self.__generalizedOzturk.dim()
 
     def __str__(self):
@@ -116,9 +118,7 @@ class Ozturk:
 
 
 def run_ozturk_annoa(dimension, size, full_data, full_classes):
-    reference_set = ['Normal']
-    # reference_set = ['Normal', 'Uniform']
-    for reference_distribution in reference_set:
+    for reference_distribution in REFERENCE_LIST:
         training_model = Ozturk(size=size,
                                 dimension=dimension,
                                 optimizer=OPTIMIZER_SET[1],

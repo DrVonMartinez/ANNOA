@@ -3,6 +3,7 @@ import os
 
 from Constants.Constants import SIZE_SET
 from Constants.Expanded_Constants import REFERENCE_LIST
+from Constants.Storage_Constants import RESULT_PATH
 
 
 def detail_size(size: int):
@@ -33,7 +34,6 @@ def detail_size(size: int):
 
 incomplete_sizes = []
 incomplete_pca_sizes = []
-cwd = os.getcwd()
 for dim in [1, 2]:
     print('Dimension:', dim)
     for data in ['All Data', 'Partial Data']:
@@ -44,7 +44,7 @@ for dim in [1, 2]:
             print('\t\t' + classes)
             for reference in REFERENCE_LIST:
                 print('\t\t\t' + reference)
-                os.chdir('C:\\Users\\Auror\\PycharmProjects\\ANNOA\\Results\\Ref ' + reference + '\\' + data + '\\' + classes)
+                os.chdir(RESULT_PATH.format(dim=dim, reference=reference, data=data, classes=classes))
                 for size_var in SIZE_SET:
                     detail_size(size_var)
 print('\n'.join(map(str, incomplete_sizes)))
