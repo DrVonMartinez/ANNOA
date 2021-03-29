@@ -47,5 +47,7 @@ for dim in [1, 2]:
                 os.chdir(RESULT_PATH.format(dim=dim, reference=reference, data=data, classes=classes))
                 for size_var in SIZE_SET:
                     detail_size(size_var)
+incomplete_sizes = sorted(incomplete_sizes, key=lambda x: x[-1])
+incomplete_pca_sizes = sorted(incomplete_pca_sizes, key=lambda x: x[-1])
 print('\n'.join(map(str, incomplete_sizes)))
 print('\n'.join(map(str, incomplete_pca_sizes)))

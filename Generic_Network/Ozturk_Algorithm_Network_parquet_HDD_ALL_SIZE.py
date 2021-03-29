@@ -235,13 +235,12 @@ class GeneralizedOzturk:
 
     @property
     def full_data_label(self):
-        if self:
-            return 'All Data'
+        return 'All Data'
 
     @property
     def full_classes_label(self):
         if self.full_classes:
-            classes = 'Complete Classes'
+            classes = 'Full Classes'
         else:
             classes = 'Limited Classes'
         return classes

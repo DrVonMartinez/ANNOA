@@ -251,7 +251,7 @@ class GeneralizedOzturk:
 
     def full_classes_label(self):
         if self.full_classes:
-            classes = 'Complete Classes'
+            classes = 'Full Classes'
         else:
             classes = 'Limited Classes'
         return classes

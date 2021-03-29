@@ -201,7 +201,7 @@ class Ozturk:
 
     def __full_classes_label(self):
         if self.__full_classes:
-            classes = 'Complete Classes'
+            classes = 'Full Classes'
         else:
             classes = 'Limited Classes'
         return classes
