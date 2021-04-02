@@ -7,7 +7,7 @@ import tensorflow as tf
 from keras.layers import Dense, Input
 from keras.models import Sequential
 
-from Constants.Constants import SEED, label
+from Constants.Constants import SEED, label, SIZE_SET
 from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS, REFERENCE_LIST
 from Constants.Storage_Constants import DATA_PATH, RESULT_PATH, MODEL_PATH
 from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
@@ -236,17 +236,12 @@ def run_ozturk_annoa(dimension, size, full_data, full_classes):
 
 def main():
     assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
-    '''
-    for dimension in [1]:
+    for dimension in [1, 2]:
         for size in SIZE_SET:
             for full_data in [True, False]:
-                run_ozturk_annoa(dimension, size, full_data, True)
-    '''
-    for dimension in [2]:
-        # for size in SIZE_SET:
-        for size in [50, 75, 80, 100, 125, 150, 200]:
-            for full_data in [True, False]:
-                for full_classes in [True]:
+                for full_classes in [True, False]:
+                    if dimension == 1 and not full_classes:
+                        continue
                     run_ozturk_annoa(dimension, size, full_data, full_classes)
 
 

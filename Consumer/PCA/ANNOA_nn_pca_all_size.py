@@ -3,8 +3,8 @@ from keras.layers import Dense, Input
 from keras.models import Sequential
 
 from Constants.Constants import PCA_VAL, SIZE_SET
-from Constants.Expanded_Constants import REFERENCE_LIST
-from Constants.Tensor_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, OPTIMIZER_SET, EXPANDED_METRIC_SET, EXPANDED_MODEL_METRICS, EXPANDED_HISTORY_KEYS
+from Constants.Expanded_Constants import REFERENCE_LIST, NUM_HIDDEN_LAYERS, NUM_EPOCHS, EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS, HIDDEN_NEURONS
+from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
 from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD_ALL_SIZE import GeneralizedOzturk
 
 
@@ -132,7 +132,7 @@ class Ozturk:
 
 
 def run_ozturk_annoa(dimension, sizes, full_classes=True):
-    for reference_distribution in REFERENCE_LIST[2:]:
+    for reference_distribution in REFERENCE_LIST:
         training_model = Ozturk(sizes=sizes,
                                 dimension=dimension,
                                 optimizer=OPTIMIZER_SET[1],
@@ -153,11 +153,11 @@ def main():
     assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
     for dimension in [1, 2]:
         if dimension == 1:
-            run_ozturk_annoa(dimension=dimension, sizes=SIZE_SET[:-2])
+            run_ozturk_annoa(dimension=dimension, sizes=SIZE_SET[:-1])
             # run_ozturk_annoa(dimension=dimension, sizes=SIZE_SET[0:2])
         else:
             for full_classes in [True, False]:
-                run_ozturk_annoa(dimension=dimension, sizes=SIZE_SET[:-2], full_classes=full_classes)
+                run_ozturk_annoa(dimension=dimension, sizes=SIZE_SET[:-1], full_classes=full_classes)
 
 
 if __name__ == "__main__":
