@@ -1,13 +1,13 @@
 import glob
-import os
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from natsort import natsorted
 
 import Utilities.Determine_Metrics as dm
 from Constants.Constants import SIZE_SET, DIMENSION_SET
 from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, NUM_EPOCHS, REFERENCE_LIST
-from Constants.Storage_Constants import RESULT_PATH
+from Constants.Storage_Constants import RESULT_PATH, PLOT_PATH
 
 SELECTED_REFERENCES = REFERENCE_LIST
 x = range(1, NUM_EPOCHS + 1)
@@ -39,31 +39,21 @@ def rename_columns(data_frame: pd.DataFrame) -> pd.DataFrame:
     return data_frame
 
 
-def name_columns(file_title: str):
-    if 'All Data' in file_title:
-        data_style = 'All Data'
-    else:
-        data_style = 'Partial Data'
-    if 'Full Classes' in file_title:
-        class_style = 'Full Classes'
-    else:
-        class_style = 'Limited Classes'
-    if 'Normal' in file_title:
-        ref_style = 'Normal'
-    else:
-        ref_style = 'Uniform'
-    if 'PCA' in file_title:
+def name_columns(file_path: str):
+    split_file_path = file_path.split('\\')
+    data_style = split_file_path[3]
+    class_style = split_file_path[4]
+    file_title = (split_file_path[-1]).split(',')
+    ref_style = file_title[0]
+    if ' PCA' == file_title[3]:
         ref_style += ' PCA'
-    split_file = file_title.split(',')
-    if '[' in file_title:
+    if '[' in file_path:
         size: str = 'All-Sizes'
     else:
-        size: str = split_file[-2].split(' ')[-1]
-        if int(size) < 100:
-            size = '0' + size
+        size: str = file_title[-2].split(' ')[-1]
         size = 'S ' + size
-    hidden_layer: str = split_file[2].split(' ')[-1]
-    dim: str = file_title.split('Dim')[-1][1]
+    hidden_layer: str = file_title[2].split(' ')[-1]
+    dim: str = file_title[1].split(' ')[-1]
     return ref_style, dim, data_style, hidden_layer, size, class_style
 
 
@@ -72,11 +62,15 @@ def load_data() -> pd.DataFrame:
     for ref in SELECTED_REFERENCES:
         for data_count_var in ['All Data', 'Partial Data']:
             for class_count_var in ['Full Classes', 'Limited Classes']:
-                os.chdir(RESULT_PATH.format(reference=ref, data=data_count_var, classes=class_count_var))
-                all_files += list(filter(lambda z: '[' not in z, glob.glob('*.csv')))
+                glob_files = list(filter(lambda z: '[' not in z, glob.glob(RESULT_PATH.format(reference=ref, data=data_count_var, classes=class_count_var) + '*.csv')))
+                for glob_file in glob_files:
+                    assert glob_file not in all_files
+                all_files += glob_files
     oa_df_list = []
     for file in all_files:
         ref_style, dim, data_style, hidden_layer, size, class_style = name_columns(file)
+        if dim == '3':
+            continue
         temp = pd.read_csv(file)
         if 'False Negatives' in temp.columns:
             temp = dm.false_positive_rate(temp)
@@ -106,12 +100,12 @@ def plot(data_df, current_metric, current_title, class_count=None, data_count=No
         path_title = 'Same Classes\\' + current_metric + '\\' + dist_add_on + class_count + ' ' + current_title + '.png'
     else:
         plt.title(current_title, fontsize=10)
-        path_title = data_count + '\\' + class_count + '\\' + dist_add_on + current_metric + '\\' + current_title + '.png'
+        path_title = data_count + '\\' + class_count + '\\' + current_metric + '\\' + dist_add_on + current_title + '.png'
 
     if show:
         plt.show()
     else:
-        plt.savefig('F:\\Plot\\' + path_title)
+        plt.savefig(PLOT_PATH + path_title)
     plt.close('all')
 
 
@@ -169,18 +163,18 @@ def group_by_category(oa_category_df: pd.DataFrame, class_count_var=None, data_c
 
 
 df = load_data()
+# print('\n'.join(natsorted(df.columns)))
+df = df.reindex(natsorted(df.columns), axis=1)
+df.info()
 for data_var in ['All Data', 'Partial Data']:
     for class_var in ['Full Classes', 'Limited Classes']:
         print(data_var, class_var, sep='\t')
-        local_df = df[filter(lambda layers: data_var in layers and class_var in layers, df.columns)]
-        group_by_category(local_df, class_count_var=class_var, data_count_var=data_var)
+        group_by_category(df[filter(lambda layers: data_var in layers and class_var in layers, df.columns)], class_count_var=class_var, data_count_var=data_var)
 for class_var in ['Full Classes', 'Limited Classes']:
     data_var = None
     print(data_var, class_var, sep='\t')
-    local_df = df[filter(lambda layers: class_var in layers, df.columns)]
-    group_by_category(local_df, class_count_var=class_var, data_count_var=data_var)
+    group_by_category(df[filter(lambda layers: class_var in layers, df.columns)], class_count_var=class_var, data_count_var=data_var)
 for data_var in ['All Data', 'Partial Data']:
     class_var = None
     print(data_var, class_var, sep='\t')
-    local_df = df[filter(lambda layers: data_var in layers, df.columns)]
-    group_by_category(local_df, class_count_var=class_var, data_count_var=data_var)
+    group_by_category(df[filter(lambda layers: data_var in layers, df.columns)], class_count_var=class_var, data_count_var=data_var)
