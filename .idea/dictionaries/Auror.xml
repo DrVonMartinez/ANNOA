@@ -2,6 +2,8 @@
   <dictionary name="Auror">
     <words>
       <w>annoa</w>
+      <w>crossentropy</w>
+      <w>dtype</w>
       <w>multilabel</w>
       <w>ozturk</w>
     </words>

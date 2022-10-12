@@ -34,10 +34,7 @@ class GeneralizedOzturk:
         self.__class_set = []
         self.__distribution_names = []
         self.full_data = full_data
-        if dimension == 1:
-            self.full_classes = True
-        else:
-            self.full_classes = full_classes
+        self.full_classes = dimension == 1 or full_classes
 
         # Setting up ANNOA
         # self.train_ratio = 0.80

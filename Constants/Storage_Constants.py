@@ -1,4 +1,4 @@
-DATA_PATH = 'F:\\Data\\dim {dim}\\Ref {reference}\\'
-MODEL_PATH = 'F:\\Model\\Ref {reference}\\{data}\\{classes}\\'
-RESULT_PATH = 'F:\\Results\\Ref {reference}\\{data}\\{classes}\\'
-PLOT_PATH = 'F:\\Plot\\'
+DATA_PATH = 'D:\\Data\\dim {dim}\\Ref {reference}\\'
+MODEL_PATH = 'D:\\Model\\Ref {reference}\\{data}\\{classes}\\'
+RESULT_PATH = 'D:\\Results\\Ref {reference}\\{data}\\{classes}\\'
+PLOT_PATH = 'D:\\Plot\\'
