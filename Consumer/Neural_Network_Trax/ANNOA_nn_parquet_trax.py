@@ -1,22 +1,22 @@
 import glob
 import itertools
-import warnings
 import random as rnd
+import warnings
 
 import pandas as pd
 import trax
+from markdown.util import deprecated
 from sklearn.preprocessing import scale as standardize
 from trax import layers as tl
-from trax.models import MLP
 from trax.fastmath import numpy as np
 from trax.supervised import training
 
 from Constants.Constants import REFERENCE_DICTIONARY, STATS_SET
-from Constants.Trax_Constants import EXPANDED_MODEL_METRICS
 from Distribution.Distribution_trax import Distribution
 from Utilities.DataGenerator import data_generator
 
 
+@deprecated
 class Ozturk:
     def __init__(self, size: int = 200, dimension: int = 1, hidden_neurons: int = 250, optimizer=trax.optimizers.Adam,
                  full_classes: bool = False, full_data: bool = False, reference_distribution: str = 'Normal',
