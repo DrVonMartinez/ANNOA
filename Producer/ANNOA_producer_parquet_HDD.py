@@ -12,11 +12,11 @@ __spec__ = None
 
 import os
 import warnings
+import itertools
 
 # Artificial Neural Network Ozturk
 import numpy as np
 import pandas as pd
-import progressbar
 from sklearn.preprocessing import scale as standardize
 
 from Constants.Constants import STATS_SET, SIZE_SET, REFERENCE_DICTIONARY, MONTE_CARLO
@@ -59,7 +59,6 @@ class OzturkTrain:
         :return:
         """
         assert self.__theta is not None
-        import itertools
         for index in itertools.product(range(len(distributions)), repeat=self.__dim):
             dist = Distribution(distributions[index[0]])
             for i in range(1, len(index)):
@@ -68,7 +67,7 @@ class OzturkTrain:
             self.__class_set.append(dist)
         self.__determine_columns()
         cwd = self.__change_cwd()
-        for i in progressbar.progressbar(range(len(self.__class_set)), redirect_stdout=True):
+        for i in range(len(self.__class_set)):
             distribution_df = self.__oa_hidden_single(self.__class_set[i]).astype(dtype=self.__dtype).fillna(value=0)
             self.__store_seq(distribution_df, self.__class_set[i])
         self.__revert(cwd)

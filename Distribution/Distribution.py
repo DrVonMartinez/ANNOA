@@ -35,14 +35,22 @@ class Distribution:
     def __eq__(self, other):
         return str(other) == str(self)
 
+    def __len__(self):
+        return len(self.rv)
+
     def __add__(self, other):
-        assert isinstance(other, Distribution)
+        if not other:
+            return self
         self.rv += other.rv
         self.title += ' ' + other.title
         return self
 
     def __radd__(self, other):
-        if other is None:
+        if not other:
             return self
-        else:
-            return self.__add__(other)
+        self.rv = other.rv + self.rv
+        self.title = other.title + self.title
+        return self
+
+    def __hash__(self):
+        return hash(self.title)
