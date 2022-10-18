@@ -12,7 +12,6 @@ from Constants.Constants import SEED, label, SIZE_SET
 from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, EXPANDED_METRIC_SET, \
     EXPANDED_HISTORY_KEYS, REFERENCE_LIST
 from Constants.Tensor_Constants import OPTIMIZER_SET, EXPANDED_MODEL_METRICS
-from Consumer.Model import Model
 
 
 # physical_devices = tf.config.list_physical_devices('GPU')
@@ -133,6 +132,12 @@ class Ozturk:
                 self.__distribution_names.append(' '.join(dist))
                 distribution_files.append(file)
 
+        if self.__full_classes:
+            assert len(self.__distribution_names) == len(all_files), \
+                f'{len(self.__distribution_names)} != {len(all_files)}'
+        else:
+            assert len(self.__distribution_names) == np.round(np.power(len(all_files), 1 / self.__dim), 8), \
+                f'{len(self.__distribution_names)} != {np.round(np.power(len(all_files), 1 / self.__dim), 8)}'
         return distribution_files
 
     def store(self):
