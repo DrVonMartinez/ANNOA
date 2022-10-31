@@ -109,7 +109,7 @@ class Ozturk:
         history_df = pd.DataFrame(columns=EXPANDED_METRIC_SET)
         for key, col in zip(history_keys, EXPANDED_METRIC_SET):
             history_df[col] = self.__history[key]
-        history_df.to_csv(f'{cwd}/{self.__model}_{self.__size}_{self.__theta}_dim{self.__dim}.csv', index=False)
+        history_df.to_csv(f'{cwd}/{self.__model}_{self.__size}_{self.__reference_distribution}_dim{self.__dim}.csv', index=False)
 
     def info(self):
         for key in self.__training:

@@ -40,11 +40,11 @@ class OA_NeuralNetwork(Model):
         self.__model.summary()
 
     def __str__(self):
-        r = range(self.__num_hidden_layers)
-        i = self.__shapes["input"]
+        i = self.__shapes["input"][0]
         o = self.__shapes["output"]
-        model = f'{i}-{"-".join([str(self.__hidden_neurons for _ in r)])}-{o}'
-        return f'OA_NN_[' + model + ']'
+        hn = [str(self.__hidden_neurons) for _ in range(self.__num_hidden_layers)]
+        model = f'{i}-{"-".join(hn)}{"-" if len(hn) > 0 else ""}{o}'
+        return 'OA_NN_[' + str(model) + ']'
 
 
 def run_ozturk_annoa(dimension, size, full_data, full_classes):

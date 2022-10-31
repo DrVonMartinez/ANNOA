@@ -46,11 +46,12 @@ class OA_PCA_NN(Model):
         self.__model.summary()
 
     def __str__(self):
-        r = range(self.__num_hidden_layers)
-        i = self.__shapes["input"]
+        i = self.__shapes["input"][0]
         o = self.__shapes["output"]
-        model = f'{i}-{"-".join([str(self.__hidden_neurons for _ in r)])}-{o}'
-        return f'OA_PCA_NN_[' + model + f']'
+        hn = [str(self.__hidden_neurons) for _ in range(self.__num_hidden_layers)]
+        print(hn)
+        model = f'{i}-{"-".join(hn)}{"-" if len(hn) > 0 else ""}{o}'
+        return 'OA_PCA_NN_[' + str(model) + ']'
 
 
 def run_ozturk_annoa(dimension, size, full_data, full_classes):
