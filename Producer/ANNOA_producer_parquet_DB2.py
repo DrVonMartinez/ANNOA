@@ -10,20 +10,18 @@ The Goal is to have Ozturk's Algorithm:
 """
 
 import itertools
-import json
-import os
 import warnings
-from decimal import Decimal
 
 # Artificial Neural Network Ozturk
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import scale as standardize
 
-from Constants.Constants import STATS_SET, SIZE_SET, REFERENCE_DICTIONARY, MONTE_CARLO
-from Constants.Expanded_Constants import REFERENCE_LIST
+from Constants.Constants import STATS_SET, REFERENCE_DICTIONARY, MONTE_CARLO
 from Distribution.Distribution import Distribution
-from Utilities.DynamoDB_Storage import AWSConnect
+from Utilities.DB2_storage import IbmConnection
+from progressbar import ProgressBar
+from multiprocessing import Pool, Queue
 
 
 class OzturkTrain:
@@ -92,26 +90,26 @@ class OzturkTrain:
             oa_producer_df[values] = ones
 
         for i in range(self.__size + 1):
-            oa_producer_df['U' + str(i)] = u[:, i]
-            oa_producer_df['V' + str(i)] = v[:, i]
+            oa_producer_df[f'U{i}'] = u[:, i]
+            oa_producer_df[f'V{i}'] = v[:, i]
         return oa_producer_df
 
     def __store_seq(self, producer_df, distribution_sequence):
-        def naming(a, value):
-            return f'{value}{a}' if a > -1 else value
-
-        ddb = AWSConnect('Ozturk_Algorithm')
-        insert = []
-        _range_ = range(-1, self.__size + 1)
-        for j in range(len(producer_df)):
-            u = {naming(i, 'U'): producer_df.loc[j, naming(i, 'U')] for i in _range_}
-            v = {naming(i, 'V'): producer_df.loc[j, naming(i, 'V')] for i in _range_}
-
-            dict_item = {"Theta/Distribution": f'{self.__theta_distribution}/{distribution_sequence}',
-                         "Index": j, "Size": self.__size, "U": u, "V": v}
-            item = json.loads(json.dumps(dict_item), parse_float=Decimal)
-            insert.append(item)
-        ddb.bulk_insert(*insert)
+        ibm = IbmConnection(f'ANNOA_{str(distribution_sequence)}_{self.__size}')
+        ibm.connect()
+        if not ibm.is_connected:
+            return
+        ibm.drop_table()
+        ibm.create_table()
+        size = int(25000 / (self.__size + 2))
+        with ProgressBar(max_value=len(producer_df)) as bar:
+            for i in range(0, len(producer_df), size):
+                upper = min(i + size - 1, len(producer_df) - 1)
+                if upper > len(producer_df) // 4:
+                    ibm.close()
+                    ibm.connect()
+                ibm.insert(producer_df.drop(columns=list(map(str, self.__class_set))).loc[i:upper].to_numpy())
+                bar.update(i)
 
     def __beta_reduction(self, stats: Distribution):
         return self.__z_2(stats.rvs(size=self.__size, samples=self.__monte_carlo, dtype=float))
@@ -208,9 +206,8 @@ def main():
             for ref_set in ['Normal']:
                 training_run = OzturkTrain(monte_carlo=MONTE_CARLO, size=size, dimension=dim)
                 training_run.reference_set(ref_set)
-                # training_run.train(STATS_SET)
-                training_run.train_single_distribution([STATS_SET[5]])
-                training_run.train_single_distribution([STATS_SET[6]])
+                for stats in STATS_SET:
+                    training_run.train_single_distribution([stats])
 
 
 if __name__ == "__main__":
