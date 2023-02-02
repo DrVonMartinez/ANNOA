@@ -3,11 +3,9 @@ import os
 
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 
 from Constants.Constants import SEED, label
-from Constants.Expanded_Constants import EXPANDED_METRIC_SET, \
-    EXPANDED_HISTORY_KEYS
+from Constants.Expanded_Constants import EXPANDED_METRIC_SET, EXPANDED_HISTORY_KEYS
 from Consumer import Model
 
 
@@ -29,7 +27,7 @@ class Ozturk:
         self.__sample_size = 0
 
         # Load Training Data
-        self.__theta: tf.Tensor = tf.zeros((self.__size,))
+        self.__theta: np.ndarray = np.zeros((self.__size,))
         self.__class_set = []
         self.__distribution_names = []
         self.__full_data = full_data
@@ -108,7 +106,8 @@ class Ozturk:
         history_keys = EXPANDED_HISTORY_KEYS
         history_df = pd.DataFrame(columns=EXPANDED_METRIC_SET)
         for key, col in zip(history_keys, EXPANDED_METRIC_SET):
-            history_df[col] = self.__history[key]
+            history_df[col] = self.__history.get(key, np.nan)
+        print(history_df)
         history_df.to_csv(f'{cwd}/{self.__model}_{self.__size}_{self.__reference_distribution}_dim{self.__dim}.csv', index=False)
 
     def info(self):

@@ -1,3 +1,5 @@
+import argparse
+
 import pandas as pd
 import tensorflow as tf
 from keras.layers import Dense, Input
@@ -12,7 +14,8 @@ tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 
 class Ozturk:
-    def __init__(self, size: int = 200, dimension: int = 1, hidden_neurons: int = 250, optimizer: str = 'adam', epochs: int = 100, full_classes: bool = False, full_data: bool = False,
+    def __init__(self, size: int = 200, dimension: int = 1, hidden_neurons: int = 250, optimizer: str = 'adam',
+                 epochs: int = 100, full_classes: bool = False, full_data: bool = False,
                  reference_distribution='Normal'):
         """
         loss function selection following suggestions from https://medium.com/data-science-group-iitr/loss-functions-and-optimization-algorithms-demystified-bb92daff331c
@@ -58,7 +61,8 @@ class Ozturk:
         for i in range(self.__num_hidden_layers):
             self.__model.add(Dense(self.__hidden_neurons, activation='relu', name='ANNOA_Hidden_' + str(i + 1)))
         self.__model.add(Dense(self.__shapes['output'], activation='softmax', name='Output'))
-        self.__model.compile(optimizer=self.__optimizer, loss='categorical_crossentropy', metrics=EXPANDED_MODEL_METRICS)
+        self.__model.compile(optimizer=self.__optimizer, loss='categorical_crossentropy',
+                             metrics=EXPANDED_MODEL_METRICS)
         print(self.__generalizedOzturk.distribution_names())
         self.__model.summary()
         self.__title = self.__set_title()
@@ -77,7 +81,10 @@ class Ozturk:
         return self.__generalizedOzturk.dim()
 
     def __str__(self):
-        return 'gen_Ozturk_[' + str(self.__generalizedOzturk.size()) + ']_[' + str(self.__generalizedOzturk.full_classes) + ']' + self.__generalizedOzturk.full_data_label().replace(' ', '_') + '_' + str(self.__num_hidden_layers)
+        return 'gen_Ozturk_[' + str(self.__generalizedOzturk.size()) + ']_[' + str(
+            self.__generalizedOzturk.full_classes) + ']' + self.__generalizedOzturk.full_data_label().replace(' ',
+                                                                                                              '_') + '_' + str(
+            self.__num_hidden_layers)
 
     def train(self):
         input_data, output_data = self.__generalizedOzturk.get_training_data()
@@ -101,7 +108,10 @@ class Ozturk:
         self.__generalizedOzturk.revert(cwd)
 
     def __set_title(self):
-        return '{}, Dim {}, Hidden Layer {}, Size {}, {}'.format(self.__generalizedOzturk.reference_distribution(), self.__generalizedOzturk.dim(), self.__num_hidden_layers, self.__generalizedOzturk.size(), self.__optimizer)
+        return '{}, Dim {}, Hidden Layer {}, Size {}, {}'.format(self.__generalizedOzturk.reference_distribution(),
+                                                                 self.__generalizedOzturk.dim(),
+                                                                 self.__num_hidden_layers,
+                                                                 self.__generalizedOzturk.size(), self.__optimizer)
 
     def info(self):
         self.__generalizedOzturk.info()
@@ -128,23 +138,17 @@ def run_ozturk_annoa(dimension, size, full_data, full_classes):
 
 
 def main():
-    assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
-    for dimension in [1]:
-        for size in [10]:
-            # for size in SIZE_SET + [500]:
-            for full_data in [False]:
-                # for full_data in [True, False]:
-                if dimension == 1:
-                    run_ozturk_annoa(dimension, size, full_data, True)
-                else:
-                    for full_classes in [True, False]:
-                        run_ozturk_annoa(dimension, size, full_data, full_classes)
+    params = argparse.ArgumentParser(prog='ANNOA_KNN', description='ANNOA for K-Nearest Neighbor')
+    params.add_argument('-d', '--dimension', required=True, type=int)
+    params.add_argument('-s', '--size', required=True, type=int)
+    params.add_argument('full_data', default=False, action='store_true')
+    params.add_argument('full_classes', default=True, action='store_false')
+    args = params.parse_args()
+    run_ozturk_annoa(args.dimension, args.size, args.full_data, args.full_classes)
 
 
 if __name__ == "__main__":
     '''
     Optimized for training size ANNOA
     '''
-    assert isinstance(Ozturk, type(GeneralizedOzturk))
-
     main()

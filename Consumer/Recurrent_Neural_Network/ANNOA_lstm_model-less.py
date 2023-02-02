@@ -1,6 +1,6 @@
 import argparse
 
-from keras.layers import Dense, Input
+from keras.layers import Dense, Input, LSTM
 from keras.models import Sequential
 
 from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, REFERENCE_LIST
@@ -29,7 +29,8 @@ class OA_NeuralNetwork(Model):
     def __define_model(self):
         model = Sequential(layers=[Input(shape=self.__shapes['input'], name='UV Input')])
         for i in range(self.__num_hidden_layers):
-            model.add(Dense(self.__hidden_neurons, activation='relu', name='ANNOA_Hidden_' + str(i + 1)))
+            self.__model.add(LSTM(self.__shapes['hidden'], return_sequences=i != (self.__num_hidden_layers - 1),
+                                  name='ANNOA_Hidden_' + str(i + 1)))
         model.add(Dense(self.__shapes['output'], activation='softmax', name='Output'))
         model.compile(optimizer=self.__optimizer, loss='categorical_crossentropy', metrics=EXPANDED_MODEL_METRICS)
         return model
@@ -46,7 +47,7 @@ class OA_NeuralNetwork(Model):
         o = self.__shapes["output"]
         hn = [str(self.__hidden_neurons) for _ in range(self.__num_hidden_layers)]
         model = f'{i}-{"-".join(hn)}{"-" if len(hn) > 0 else ""}{o}'
-        return 'OA_NN_[' + str(model) + ']'
+        return 'OA_LSTM_[' + str(model) + ']'
 
 
 def run_ozturk_annoa(dimension, size, full_data, full_classes):

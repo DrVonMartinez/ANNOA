@@ -1,3 +1,5 @@
+import argparse
+
 import pandas as pd
 import tensorflow as tf
 from keras.layers import Dense, Input
@@ -136,15 +138,13 @@ def run_ozturk_annoa(dimension, size, full_data, full_classes):
 
 
 def main():
-    assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
-    for dimension in [2]:
-        for size in SIZE_SET:
-            for full_data in [True, False]:
-                if dimension == 1:
-                    run_ozturk_annoa(dimension, size, full_data, True)
-                else:
-                    for full_classes in [True, False]:
-                        run_ozturk_annoa(dimension, size, full_data, full_classes)
+    params = argparse.ArgumentParser(prog='ANNOA_KNN', description='ANNOA for K-Nearest Neighbor')
+    params.add_argument('-d', '--dimension', required=True, type=int)
+    params.add_argument('-s', '--size', required=True, type=int)
+    params.add_argument('full_data', default=False, action='store_true')
+    params.add_argument('full_classes', default=True, action='store_false')
+    args = params.parse_args()
+    run_ozturk_annoa(args.dimension, args.size, args.full_data, args.full_classes)
 
 
 if __name__ == "__main__":

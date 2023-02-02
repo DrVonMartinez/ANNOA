@@ -206,7 +206,8 @@ def main():
             for dimension in dimensions:
                 for size in sizes:
                     hidden_neurons = int(size * 1.25)
-                    training_model = Ozturk(size=size, dimension=dimension, num_hidden_layers=num_hidden_layers, hidden_neurons=hidden_neurons, optimizer='adam', epochs=25, full_classes=full_classes)
+                    training_model = Ozturk(size=size, dimension=dimension, num_hidden_layers=num_hidden_layers,
+                                            hidden_neurons=hidden_neurons, optimizer='adam', epochs=25, full_classes=full_classes)
                     # training_model.train()
 
 

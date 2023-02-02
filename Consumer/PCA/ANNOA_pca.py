@@ -1,18 +1,15 @@
-from keras.layers import Dense, Input
+import argparse
+
 from keras.layers import Dense, Input
 from keras.models import Sequential
 from sklearn.decomposition import PCA
 
-from Constants.Constants import PCA_VAL, SIZE_SET
+from Constants.Constants import PCA_VAL
 from Constants.Expanded_Constants import NUM_HIDDEN_LAYERS, HIDDEN_NEURONS, NUM_EPOCHS, REFERENCE_LIST
 from Constants.Tensor_Constants import EXPANDED_MODEL_METRICS
 from Consumer.ANNOA_Model_less import Ozturk
 from Consumer.Model import Model
-from Generic_Network.Ozturk_Algorithm_Network_parquet_HDD import GeneralizedOzturk
 
-
-# physical_devices = tf.config.list_physical_devices('GPU')
-# tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
 class OA_PCA_NN(Model):
     def __init__(self, shape=None, hidden_neurons: int = 250, hidden_layers: int = 0, optimizer: str = 'adam',
@@ -73,21 +70,17 @@ def run_ozturk_annoa(dimension, size, full_data, full_classes):
 
 
 def main():
-    assert (__name__ == "__main__"), "Method not intended to be called if this isn't the main file"
-    for dimension in [2]:
-        # for size in [150, 200]:
-        for size in SIZE_SET:
-            if dimension == 1:
-                run_ozturk_annoa(dimension=dimension, size=size, full_classes=True, full_data=True)
-            else:
-                for full_classes in [True, False]:
-                    run_ozturk_annoa(dimension=dimension, size=size, full_classes=full_classes, full_data=True)
+    params = argparse.ArgumentParser(prog='ANNOA_KNN', description='ANNOA for K-Nearest Neighbor')
+    params.add_argument('-d', '--dimension', required=True, type=int)
+    params.add_argument('-s', '--size', required=True, type=int)
+    params.add_argument('full_data', default=False, action='store_true')
+    params.add_argument('full_classes', default=True, action='store_false')
+    args = params.parse_args()
+    run_ozturk_annoa(args.dimension, args.size, args.full_data, args.full_classes)
 
 
 if __name__ == "__main__":
     '''
     Optimized for training size ANNOA
     '''
-    assert isinstance(Ozturk, type(GeneralizedOzturk))
-
     main()
