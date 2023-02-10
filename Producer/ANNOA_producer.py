@@ -84,7 +84,7 @@ class OzturkTrainGeneral(abc.ABC):
 
     def __oa_hidden(self, distribution_sequence):
         train_ozturk = np.sort(self.__beta_reduction(distribution_sequence), axis=1)
-        detrended = standardize(train_ozturk, axis=1)
+        detrended = (train_ozturk - train_ozturk.mean(axis=0)) / train_ozturk.std(axis=0)
         u, v = self.__ozturk_function(detrended)
         return u, v
 
@@ -93,22 +93,38 @@ class OzturkTrainGeneral(abc.ABC):
         pass
 
     def __beta_reduction(self, stats: Distribution):
-        return self.__z_2(stats.rvs(size=self._size, samples=self.__monte_carlo, dtype=float))
+        return self.__z_2(stats.rvs(size=self._size, samples=self.__monte_carlo, dtype=float), stats)
 
-    def __z_2(self, p) -> np.ndarray:
+    def __z_2(self, p, distribution: Distribution) -> np.ndarray:
         """
         The Formula for Z^2
         Z**2 = (p-mu).T  *  sigma**-1  * (p-mu)
         """
+        file = f'../preprocessing/{self._theta_distribution}.dim_reduction'
+        columns = ["Distribution", "Size", "Dimension", "Mean", "Inverse Covariance"]
+        set_index = ["Distribution", "Size", "Dimension"]
+        current_params = (str(distribution), self._size, self._dim)
+        try:
+            df = pd.read_csv(file)
+        except FileNotFoundError:
+            df = pd.DataFrame(columns=columns)
+        current = pd.DataFrame([[str(distribution), self._size, self._dim, None, None]], columns=columns)
+        try:
+            df = df.merge(current, how='left', on=set_index, suffixes=(None, None))
+        except ValueError:
+            df = df[df[set_index] == current_params]
         if self._dim == 1:
+            df.to_csv(file)
             return p.reshape(self.__monte_carlo, self._size)
+        df = df.set_index(set_index)
         p_mean = p.mean(axis=1).reshape((self.__monte_carlo, 1, self._dim))
         p_cov = np.array([np.cov(p[i, :, :], rowvar=False) for i in range(self.__monte_carlo)])
-        inv_p_cov = np.linalg.inv(p_cov)
         try:
+            inv_p_cov = np.linalg.inv(p_cov)
             assert not np.isnan(inv_p_cov).any()
         except AssertionError:
             inv_p_cov = np.linalg.pinv(p_cov)
+        df.at[current_params] = (p_mean.mean(axis=0), inv_p_cov.mean(axis=0))
 
         p_t: np.ndarray = np.subtract(p, p_mean).conj()
         p_new: np.ndarray = np.transpose(np.subtract(p, p_mean), axes=(0, 2, 1))
